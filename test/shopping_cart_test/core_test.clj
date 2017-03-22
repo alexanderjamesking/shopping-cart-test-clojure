@@ -39,5 +39,7 @@
 
   (testing "running total"
     (let [res (running-total-checkout '(:apple :apple :orange :apple))]
-      (is (= (:totals res) [(bigdec 1.45) (bigdec 0.85) (bigdec 0.6) (bigdec 0.6)]))
-      (is (= (:total res) (bigdec 1.45))))))
+      (is (= (:totals res)
+             [(bigdec 1.45) (bigdec 0.85) (bigdec 0.6) (bigdec 0.6)]))
+      (is (= (:total res)
+             (bigdec 1.45))))))

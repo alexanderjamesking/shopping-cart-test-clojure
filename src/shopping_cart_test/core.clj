@@ -25,15 +25,20 @@
   (filter #(= (:offer %) offer) items))
 
 (defn- calculate-price [offer items]
-  (let [prices (map #((:item %) price-lookup) (items-matching-offer offer items))
+  (let [prices (map #((:item %) price-lookup)
+                    (items-matching-offer offer items))
         offer-fn (offer offer-to-fn)]
     (offer-fn prices)))
 
-(defn lookup-offer [item] {:item  item :offer (item-to-offer item)})
+(defn lookup-offer [item]
+  {:item  item :offer (item-to-offer item)})
 
 (defn checkout [items]
   (let [items-with-offer (map lookup-offer items)
-        offer-prices (map (fn [offer] (calculate-price offer items-with-offer)) offers)]
+        offer-prices (map (fn
+                            [offer]
+                            (calculate-price offer items-with-offer))
+                          offers)]
     (reduce + offer-prices)))
 
 (defn- totals-calculator [checked-out-items, item-to-checkout]
@@ -41,11 +46,9 @@
         total-so-far (checkout items)]
     {:items  items
      :totals (conj (:totals checked-out-items) total-so-far)
-     :total  total-so-far
-     }))
+     :total  total-so-far}))
 
 (defn running-total-checkout [items]
   (let [result (reduce totals-calculator '() items)]
     {:totals (:totals result)
-     :total  (:total result)
-     }))
+     :total  (:total result)}))
